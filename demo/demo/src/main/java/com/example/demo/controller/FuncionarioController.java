@@ -1,0 +1,33 @@
+package com.example.demo.controller;
+
+import com.example.demo.entity.FuncionarioEntity;
+import com.example.demo.repository.FuncionarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+
+
+@RestController
+@RequestMapping("/funcionarios")
+public class FuncionarioController {
+    @Autowired
+
+    private FuncionarioRepository repository;
+
+    @GetMapping
+    public List<FuncionarioEntity> listarTodos() {
+        return repository.findAll();
+    }
+
+    @PostMapping
+    public ResponseEntity<Map<String, Object>> salvar(@RequestBody FuncionarioEntity funcionario) {
+        repository.save(funcionario);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(Map.of("mensagem", "funcionario salvo com sucesso"));
+    }
+}
